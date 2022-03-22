@@ -1,0 +1,29 @@
+{
+  "debugExtensions": {
+    "exampledbg": {
+      "vsDebugEngineGuid": "{92EF0900-2251-11D2-B72E-0000F87572EF}",
+      "VsDebugTargetInfo4": {
+        "bstrExe": "${debugInfo.target}",
+        "bstrCurDir": "${debugInfo.currentDir}"
+      },
+      "templates": [
+        {
+          "templateId": "launch",
+          "displayName": "ExampleDBG",
+          "description": "This is an example launch template based on the 'mixed' template for debugging both managed and native code.",
+          "fileExtensions": [ "*.exe" ]
+        }
+      ],
+      "schema": {
+        "definitions": {
+          "exampledbgLayout": {
+            "allOf": [
+              { "$ref": "#/definitions/default" }
+            ]
+          }
+        },
+        "configuration": "#/definitions/exampledbgLayout"
+      }
+    }
+  }
+}
