@@ -1,12 +1,15 @@
 ﻿using Microsoft;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Workspace;
 using Microsoft.VisualStudio.Workspace.Build;
 using Microsoft.VisualStudio.Workspace.Extensions.VS;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AnyCodeLaunchExample
 {
@@ -61,9 +64,18 @@ namespace AnyCodeLaunchExample
 
         public async Task<IFileContextActionResult> ExecuteAsync(IProgress<IFileContextActionProgressUpdate> progress, CancellationToken cancellationToken)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            MessageBox.Show("Hello!");
-            return new FileContextActionResult(success: true);
+            await TaskScheduler.Default;
+
+            // For this example our action will simply invoke msbuild.
+            var startInfo = new ProcessStartInfo();
+            string anyCodeFolder = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Microsoft.VisualStudio.Workspace.IWorkspace)).Location);
+            startInfo.FileName = Path.Combine(anyCodeFolder, @"..\..\..\..\..\MSBuild\Current\Bin\MSBuild.exe");
+            startInfo.Arguments = exampleTaskContext.MSBuildTask + " \"" + exampleTaskContext.FilePath + "\"";
+
+            Process msbuildProcess = Process.Start(startInfo);
+            int exitCode = await msbuildProcess.WaitForExitAsync();
+
+            return new FileContextActionResult(success: exitCode == 0);
         }
     }
 }

@@ -1,0 +1,17 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "Example Task CUSTOM",
+      "appliesTo": "TestConsoleApp.csproj",
+      "type": "taskExample",
+      "contextType": "custom"
+    },
+    {
+      "taskLabel": "Example Task BUILD",
+      "appliesTo": "TestConsoleApp.csproj",
+      "type": "taskExample",
+      "contextType": "build"
+    }
+  ]
+}

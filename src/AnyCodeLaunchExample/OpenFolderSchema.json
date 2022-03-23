@@ -8,17 +8,33 @@
       },
       "templates": [
         {
-          "templateId": "launch",
-          "displayName": "ExampleDBG",
+          "templateId": "exampleLaunchTemplate",
+          "displayName": "Example Launch Template",
           "description": "This is an example launch template based on the 'mixed' template for debugging both managed and native code.",
           "fileExtensions": [ "*.exe" ]
         }
       ],
       "schema": {
         "definitions": {
+          "exampledbgSchemaDefinition": {
+            "type": "object",
+            "properties": {
+              "comment": {
+                "type": "string",
+                "description": "Specifies the configuration documentation. The value is ignored."
+              },
+              "type": {
+                "type": "string",
+                "enum": [ "exampledbg" ]
+              }
+            }
+          },
           "exampledbgLayout": {
             "allOf": [
-              { "$ref": "#/definitions/default" }
+              { "$ref": "#/definitions/default" },
+              {
+                "$ref": "#/definitions/exampledbgSchemaDefinition"
+              }
             ]
           }
         },
